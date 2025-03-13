@@ -85,6 +85,8 @@ const Header = () => {
               if (getCookie("auth") === "success") {
                 deleteCookie("auth");
                 navigate("/login");
+              }else{
+                navigate("/login");
               }
             }}
           >
