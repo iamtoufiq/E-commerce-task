@@ -5,6 +5,7 @@ import { fetchProductsByCategory } from "../redux/slices/productSlice";
 import { RootState, AppDispatch } from "../redux/store";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { addToCart } from "../redux/slices/cartSlice";
+import { toggleWishlist } from "../redux/slices/wishlistSlice";
 
 interface Product {
   id: number;
@@ -24,16 +25,18 @@ const Products = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
-  const { products: fetchedProducts, isFetchingCategory, error } = useSelector(
-    (state: RootState) => state.products
-  );
+  const {
+    products: fetchedProducts,
+    isFetchingCategory,
+    error,
+  } = useSelector((state: RootState) => state.products);
 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
   const [minRating, setMinRating] = useState<number>(0);
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>("");
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false); 
+  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
   useEffect(() => {
     let result = [...fetchedProducts];
@@ -65,7 +68,7 @@ const Products = () => {
     setMinRating(0);
     setInStockOnly(false);
     setSortOption("");
-    setIsFilterOpen(false); 
+    setIsFilterOpen(false);
   };
 
   if (isFetchingCategory) return <LoadingSpinner />;
@@ -235,24 +238,20 @@ const Products = () => {
                   <div className="mt-4 flex justify-between gap-2">
                     <button
                       onClick={() =>
-                        dispatch(addToCart({
-                          ...product, quantity: 1,
-                          name: ""
-                        }))
+                        dispatch(
+                          addToCart({
+                            ...product,
+                            quantity: 1,
+                            name: "",
+                          })
+                        )
                       }
                       className="flex-1 px-3 py-2 bg-indigo-500 font-bold text-white text-sm rounded-md hover:bg-indigo-700 transition"
                     >
                       Add to Cart
                     </button>
                     <button
-                     onClick={() =>
-                      dispatch(addToCart({
-                        ...product,
-                        name: product.title,
-                        quantity: 1
-                      }))
-                    }
-                    
+                   onClick={() => dispatch(toggleWishlist({ ...product, name: product.title }))}
                       className="px-3 py-2 bg-gray-200 text-gray-700 text-sm rounded-md hover:bg-gray-300 transition"
                     >
                       ❤️

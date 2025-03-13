@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { baseUrl } from "../../constant/data";
 
 export interface Product {
+  name: string | undefined;
   id: number;
   title: string;
   description: string;
