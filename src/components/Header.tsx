@@ -85,6 +85,7 @@ const Header = () => {
               if (getCookie("auth") === "success") {
                 deleteCookie("auth");
                 navigate("/login");
+                window.location.reload();
               }else{
                 navigate("/login");
               }
